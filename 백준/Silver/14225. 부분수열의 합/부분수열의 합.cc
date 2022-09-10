@@ -1,25 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, num;
-int chck[2000001];
-vector<int> v;
-void    make(int number)
+int     n;
+bool    chck[2000001];
+int     seq[21];
+int     j = 1;
+
+void    solve(int num, int sum)
 {
-    vector<int> tmp;
-    for (int i = 1; i <= n; i++)
-    {
-        if (i <= number)
-            tmp.push_back(0);
-        else
-            tmp.push_back(1);
-    }
-    do{
-        int num_tmp = 0;
-        for(int i = 0; i < n; i++)
-            if (!tmp[i])
-                num_tmp += v[i];
-        chck[num_tmp] = 1;
-    }while (next_permutation(tmp.begin(), tmp.end()));
+    chck[sum] = 1;
+    if (num == n)
+        return ;
+    solve(num + 1, sum);
+    solve(num + 1, sum + seq[num]);
 }
 
 int main(void)
@@ -29,19 +21,10 @@ int main(void)
 
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
-        cin >> num;
-        v.push_back(num);
-    }
-    for(int i = 1; i <= n; i++)
-        make(i);
-    for (int i = 1; i <= accumulate(v.begin(), v.end(), 0) + 1; i++)
-    {
-        if (!chck[i])
-        {
-            cout << i;
-            return (0);
-        }
-    }
+        cin >> seq[i];
+    solve(0, 0);
+    while (chck[j])
+        j++;
+    cout << j;
     return (0);
 }
