@@ -1,36 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
 int n;
-int arr[21][21];
+int mn = 987654321;
+int number[21][21];
+int team[11];
+int chck[21];
 
-int get_sum(vector<int>  *v)
+int     get_sum(int *arr)
 {
-    int tmp = 0;
-    for (int i = 0; i < (*v).size(); i++)
+    int total = 0;
+
+    for (int i = 0; i < n / 2 - 1; i++)
     {
-        for (int j = i + 1; j < (*v).size(); j++)
-            tmp += arr[(*v)[i]][(*v)[j]] + arr[(*v)[j]][(*v)[i]];
+        for (int j = i + 1; j < n / 2; j++)
+            total += number[arr[i]][arr[j]] + number[arr[j]][arr[i]];
     }
-    return (tmp);
+    return (total);
 }
 
-int calculate(int *half_arr)
+void    yeah(int idx, int from)
 {
-    int mn = 987654321;
-    do{
-        vector<int> start;
-        vector<int> link;
+    if (idx == n / 2)
+    {
+        int j = 0;
+        int anther_team[11];
+        
         for (int i = 0; i < n; i++)
         {
-            if (!half_arr[i])
-                start.push_back(i);
-            else
-                link.push_back(i);
+            if (!chck[i])
+                anther_team[j++] = i;
         }
-        mn = min(mn, abs(get_sum(&start) - get_sum(&link)));
-    }while (next_permutation(half_arr, half_arr + n));
+        mn = min(mn, abs(get_sum(team) - get_sum(anther_team)));
+        return ;
+    }
 
-    return (mn);
+    for (int i = from; i < n; i++)
+    {
+        team[idx] = i;
+        chck[i] = 1;
+        yeah(idx + 1, i + 1);
+        chck[i] = 0;
+    }
 }
 
 int main(void)
@@ -39,20 +49,12 @@ int main(void)
     ios::sync_with_stdio(0);
 
     cin >> n;
-    int half_arr[n];
-
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
-            cin >> arr[i][j];
+            cin >> number[i][j];
     
-    for(int i = 0; i < n; i++)
-    {
-        if (i < n / 2)
-            half_arr[i] = 0;
-        else
-            half_arr[i] = 1;
-    }
-
-    cout << calculate(half_arr);
+    chck[0] = 1;
+    yeah(1, 1);
+    cout << mn;
     return (0);
 }
