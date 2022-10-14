@@ -23,15 +23,10 @@ int main(void)
             int status = 0;
             for (int i = 0; i < 100; i++)
             {
-                if ((cnt == 0 && status == 0 && arr[i][j] == 2) || !arr[i][j])
-                    continue;
-                if (arr[i][j] == 1)
-                    status = 1;
-                else if (status && status != arr[i][j])
-                {
-                    status = 0;
+                if (status == 1 && arr[i][j] == 2)
                     cnt++;
-                }
+                if (arr[i][j])
+                    status = arr[i][j];
             }
             total += cnt;
         }
