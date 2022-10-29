@@ -2,58 +2,52 @@
 using namespace std;
 
 int n, m, r;
-int table[305][305]; 
+int arr[301][301];
 
-void rotate(int si, int sj, int ei, int ej) {
-    int temp = table[si][sj];
+void    rotate(int si, int sj, int ei, int ej)
+{
+    int tmp = arr[si][sj];
+
+    for (int j = sj; j < ej; j++)
+        arr[si][j] = arr[si][j + 1];
+
+    for (int i = si; i < ei; i++)
+        arr[i][ej] = arr[i + 1][ej];
     
-    for(int j = sj; j < ej; j++)
-        table[si][j] = table[si][j+1];
+    for (int j = ej; j > sj; j--)
+        arr[ei][j] = arr[ei][j - 1];
+    
+    for (int i = ei; i > si; i--)
+        arr[i][sj] = arr[i - 1][sj];
 
-    for(int i = si; i < ei; i++)
-        table[i][ej] = table[i+1][ej];
-
-    for(int j = ej; sj < j; j--)
-        table[ei][j] = table[ei][j-1];
-
-    for(int i = ei; si+1 < i; i--)
-        table[i][sj] = table[i-1][sj];
-
-    table[si+1][sj] = temp; 
+    arr[si + 1][sj] = tmp;
 }
 
-int main() {
+int main(void)
+{
     cin.tie(0);
     ios::sync_with_stdio(0);
 
     cin >> n >> m >> r;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            cin >> arr[i][j];
     
-    for(int i=1;i<=n;i++)
-        for(int j=1;j<=m;j++)
-            cin >> table[i][j];
-
-    while(r--)
+    while (r--)
     {
-        int si = 1;
-        int sj = 1;
-        int ei = n;
-        int ej = m;
-        
-        while(si < ei && sj < ej)
-        {
-            rotate(si, sj, ei, ej);
-            si++;
-            sj++;
-            ei--;
-            ej--;
-        }   
+        int si = 0;
+        int sj = 0;
+        int ei = n - 1;
+        int ej = m - 1;
+        while (si < ei && sj < ej)
+            rotate(si++, sj++, ei--, ej--);
     }
 
-    for(int i=1;i<=n;i++)
+    for (int i = 0; i < n; i++)
     {
-        for(int j=1;j<=m;j++)
-            cout << table[i][j] << " ";
-        cout << endl;
+        for (int j = 0; j < m; j++)
+            cout << arr[i][j] << ' ';
+        cout << '\n';
     }
     return (0);
 }
