@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int arr[4][4];
-int chck[10000000];
+unordered_set<int>  s;
 int dx[4] = {0, -1, 0, 1};
 int dy[4] = {-1, 0, 1, 0};
 
@@ -12,7 +12,7 @@ void    init()
         for (int j = 0; j < 4; j++)
             cin >> arr[i][j];
     }
-    fill(chck, chck + 10000000, 0);
+    s.clear();
 }
 
 void    bfs(int i, int j)
@@ -28,7 +28,7 @@ void    bfs(int i, int j)
         q.pop();
         if (len == 7)
         {
-            chck[number] = 1;
+            s.insert(number);
             continue;
         }
         for (int dir = 0; dir < 4; dir++)
@@ -59,7 +59,7 @@ int main(void)
             for (int j = 0; j < 4; j++)
                 bfs(i, j);
         }
-        cout << '#' << cur_case << ' ' << accumulate(chck, chck + 10000000, 0) << '\n'; 
+        cout << '#' << cur_case << ' ' << s.size() << '\n'; 
     }
     return (0);
 }
